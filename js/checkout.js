@@ -1,38 +1,32 @@
-const checkoutCartKey = "fitmoongfali-cart";
-const checkoutWhatsappNumber = "919876543210";
+// Checkout page controller.
+// Reuses the shared product data, cart service, and WhatsApp helper rather
+// than re-declaring its own copies (which it previously did).
 
-const checkoutProducts = {
-  "classic-creamy": { name: "Classic Creamy", price: 249 },
-  "crunchy-power": { name: "Crunchy Power", price: 269 },
-  "chocolate-protein": { name: "Chocolate Protein", price: 299 }
-};
+import { products } from "./data/products.js";
+import { loadCart, calculateSubtotal } from "./services/cart.js";
+import { buildWhatsappUrl } from "./services/whatsapp.js";
 
 const checkoutItems = document.getElementById("checkout-items");
 const checkoutTotal = document.getElementById("checkout-total");
 const checkoutForm = document.getElementById("checkout-form");
 
-const checkoutCart = loadCheckoutCart();
+const cart = loadCart();
 renderCheckoutCart();
 checkoutForm.addEventListener("submit", handleCheckoutSubmit);
 
-function loadCheckoutCart() {
-  try {
-    const saved = localStorage.getItem(checkoutCartKey);
-    return saved ? JSON.parse(saved) : [];
-  } catch {
-    return [];
-  }
+function findProduct(id) {
+  return products.find((product) => product.id === id);
 }
 
 function renderCheckoutCart() {
-  if (!checkoutCart.length) {
+  if (!cart.length) {
     checkoutItems.innerHTML = '<p class="empty-state">Your cart is empty. Go back and add products before checkout.</p>';
     checkoutTotal.textContent = "Rs. 0";
     return;
   }
 
-  checkoutItems.innerHTML = checkoutCart.map((item) => {
-    const product = checkoutProducts[item.id];
+  checkoutItems.innerHTML = cart.map((item) => {
+    const product = findProduct(item.id);
     if (!product) {
       return "";
     }
@@ -48,27 +42,20 @@ function renderCheckoutCart() {
     `;
   }).join("");
 
-  checkoutTotal.textContent = `Rs. ${calculateTotal()}`;
-}
-
-function calculateTotal() {
-  return checkoutCart.reduce((sum, item) => {
-    const product = checkoutProducts[item.id];
-    return product ? sum + product.price * item.quantity : sum;
-  }, 0);
+  checkoutTotal.textContent = `Rs. ${calculateSubtotal(cart, products)}`;
 }
 
 function handleCheckoutSubmit(event) {
   event.preventDefault();
 
-  if (!checkoutCart.length) {
+  if (!cart.length) {
     return;
   }
 
   const formData = new FormData(checkoutForm);
-  const total = calculateTotal();
-  const orderLines = checkoutCart.map((item) => {
-    const product = checkoutProducts[item.id];
+  const total = calculateSubtotal(cart, products);
+  const orderLines = cart.map((item) => {
+    const product = findProduct(item.id);
     return `- ${product.name} x${item.quantity}`;
   }).join("\n");
 
@@ -90,6 +77,5 @@ function handleCheckoutSubmit(event) {
     "Please confirm my order."
   ].join("\n");
 
-  const whatsappUrl = `https://wa.me/${checkoutWhatsappNumber}?text=${encodeURIComponent(message)}`;
-  window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+  window.open(buildWhatsappUrl(message), "_blank", "noopener,noreferrer");
 }

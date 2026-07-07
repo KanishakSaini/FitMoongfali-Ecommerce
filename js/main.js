@@ -1,117 +1,18 @@
-const whatsappNumber = "919876543210";
-const cartStorageKey = "fitmoongfali-cart";
+// Home page controller.
+// Handles rendering (products, reviews, FAQs, cart drawer), navigation,
+// the product modal, the reviews slider, the contact form, and reveal
+// animations. Shared data and logic are imported from the modules below.
 
-const products = [
-  {
-    id: "classic-creamy",
-    name: "Classic Creamy",
-    shortDescription: "Silky roasted peanut butter for clean breakfasts, smoothies, and pre-workout fuel.",
-    description: "Classic Creamy is the everyday jar for people who want smooth texture, rich peanut flavor, and a dependable clean-label spread.",
-    tag: "Signature",
-    price: 249,
-    weight: "340g",
-    image: "images/jar-classic.svg",
-    imageAlt: "Classic Creamy peanut butter jar",
-    features: ["High protein", "No added oil", "No preservatives"],
-    ingredients: "Roasted peanuts, a touch of jaggery, and pink salt.",
-    nutrition: "Approx. per 100g: Protein 26g, Healthy fats 49g, Carbohydrates 18g.",
-    benefits: "Great for breakfast, post-workout shakes, toast, oats, and guilt-free snacking.",
-    storage: "Stir if natural oil separation happens. Store in a cool, dry place and always use a dry spoon.",
-    bestFor: "Students, working professionals, and anyone who wants a versatile everyday jar."
-  },
-  {
-    id: "crunchy-power",
-    name: "Crunchy Power",
-    shortDescription: "Bold peanut crunch with a satisfying bite for people who like texture in every spoon.",
-    description: "Crunchy Power brings together roasted depth and peanut bits for a more textured, snackable experience.",
-    tag: "Best Seller",
-    price: 269,
-    weight: "340g",
-    image: "images/jar-crunchy.svg",
-    imageAlt: "Crunchy Power peanut butter jar",
-    features: ["Crunchy texture", "Freshly made", "Protein-rich"],
-    ingredients: "Roasted peanuts, crushed peanut bits, jaggery, and pink salt.",
-    nutrition: "Approx. per 100g: Protein 25g, Healthy fats 50g, Carbohydrates 19g.",
-    benefits: "Adds texture to toast, smoothie bowls, sandwiches, and healthy snacks.",
-    storage: "Natural oil separation is normal. Stir well and keep sealed after use.",
-    bestFor: "Fitness lovers and families who enjoy a fuller roasted bite."
-  },
-  {
-    id: "chocolate-protein",
-    name: "Chocolate Protein",
-    shortDescription: "A richer dessert-style option that still feels aligned with a mindful lifestyle.",
-    description: "Chocolate Protein is designed for people who want indulgent taste with a premium, fitness-friendly feel.",
-    tag: "Premium",
-    price: 299,
-    weight: "340g",
-    image: "images/jar-chocolate.svg",
-    imageAlt: "Chocolate Protein peanut butter jar",
-    features: ["Cocoa richness", "No preservatives", "Workout-friendly"],
-    ingredients: "Roasted peanuts, cocoa, jaggery, whey protein blend, and pink salt.",
-    nutrition: "Approx. per 100g: Protein 28g, Healthy fats 46g, Carbohydrates 20g.",
-    benefits: "Perfect for smoothies, toast, pancakes, and healthy dessert cravings.",
-    storage: "Keep in a cool, dry place. Stir before use if oil separation appears.",
-    bestFor: "Gym-goers, students, and anyone who wants a richer flavor profile."
-  }
-];
-
-const reviews = [
-  {
-    name: "Riya S.",
-    role: "Fitness enthusiast",
-    text: "The creamy variant feels premium and fresh. It tastes clean, not overly sweet, and works perfectly in my morning oats."
-  },
-  {
-    name: "Aditya M.",
-    role: "Gym member",
-    text: "Crunchy Power is the best part of my pre-workout toast. The texture is great and it feels much more honest than supermarket jars."
-  },
-  {
-    name: "Neha K.",
-    role: "Working professional",
-    text: "I ordered through WhatsApp and the process was super easy. The packaging and flavor both felt like a real premium brand."
-  },
-  {
-    name: "Sonal P.",
-    role: "Parent",
-    text: "We use it for breakfast at home and even my kids enjoy it. Natural, rich, and easy to trust."
-  }
-];
-
-const faqs = [
-  {
-    question: "Does oil separation happen?",
-    answer: "Yes. Natural oil separation can happen because the peanut butter is made with fewer stabilizers. Just stir well before use."
-  },
-  {
-    question: "How should I store it?",
-    answer: "Store it in a cool, dry place and always use a clean, dry spoon. Refrigeration can help if you prefer a firmer texture."
-  },
-  {
-    question: "How long does it last?",
-    answer: "For best taste and freshness, finish the jar within the recommended period mentioned on your packaging after opening."
-  },
-  {
-    question: "Is it good for muscle gain?",
-    answer: "It can be a helpful part of a balanced high-protein diet because peanuts provide healthy fats, calories, and protein."
-  },
-  {
-    question: "Can children eat it?",
-    answer: "Yes, unless there is a peanut allergy or medical restriction. It works well in sandwiches, toast, and snacks."
-  },
-  {
-    question: "Is it sweetened?",
-    answer: "Some variants may include a light touch of jaggery or cocoa-based flavoring, depending on the product."
-  },
-  {
-    question: "Is it suitable for busy professionals?",
-    answer: "Absolutely. It is made for quick breakfasts, office snacks, and easy nutrition through the day."
-  },
-  {
-    question: "How do I place an order?",
-    answer: "Add products to the cart, go to checkout, fill your details, and send the pre-filled order message directly on WhatsApp."
-  }
-];
+import { products } from "./data/products.js";
+import { reviews } from "./data/reviews.js";
+import { faqs } from "./data/faqs.js";
+import {
+  loadCart,
+  saveCart,
+  countItems,
+  calculateSubtotal
+} from "./services/cart.js";
+import { buildWhatsappUrl, buildProductOrderMessage } from "./services/whatsapp.js";
 
 const state = {
   cart: loadCart(),
@@ -154,19 +55,6 @@ function init() {
   setupRevealAnimations();
 }
 
-function loadCart() {
-  try {
-    const saved = localStorage.getItem(cartStorageKey);
-    return saved ? JSON.parse(saved) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveCart() {
-  localStorage.setItem(cartStorageKey, JSON.stringify(state.cart));
-}
-
 function renderProducts() {
   selectors.productGrid.innerHTML = products.map((product) => `
     <article class="product-card reveal">
@@ -194,7 +82,7 @@ function renderProducts() {
       </div>
       <div class="product-actions">
         <button class="button button-solid" type="button" data-action="add" data-id="${product.id}">Add to Cart</button>
-        <a class="button button-ghost" href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buildSingleProductMessage(product))}" target="_blank" rel="noreferrer">Order on WhatsApp</a>
+        <a class="button button-ghost" href="${buildWhatsappUrl(buildProductOrderMessage(product))}" target="_blank" rel="noreferrer">Order on WhatsApp</a>
         <button class="button button-ghost" type="button" data-action="learn" data-id="${product.id}">Learn More</button>
       </div>
     </article>
@@ -266,17 +154,15 @@ function renderCart() {
     selectors.cartItems.innerHTML = items;
   }
 
-  const totalItems = state.cart.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = state.cart.reduce((sum, item) => {
-    const product = products.find((productEntry) => productEntry.id === item.id);
-    return product ? sum + product.price * item.quantity : sum;
-  }, 0);
+  const totalItems = countItems(state.cart);
+  const subtotal = calculateSubtotal(state.cart, products);
 
   selectors.cartCount.textContent = String(totalItems);
   selectors.floatingCartCount.textContent = String(totalItems);
   selectors.cartItemsTotal.textContent = String(totalItems);
   selectors.cartSubtotal.textContent = `Rs. ${subtotal}`;
-  saveCart();
+
+  saveCart(state.cart);
 }
 
 function setupEvents() {
@@ -429,7 +315,7 @@ function openProductModal(productId) {
         </ul>
         <div class="product-actions">
           <button class="button button-solid" type="button" data-action="add" data-id="${product.id}">Add to Cart</button>
-          <a class="button button-ghost" href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buildSingleProductMessage(product))}" target="_blank" rel="noreferrer">Order on WhatsApp</a>
+          <a class="button button-ghost" href="${buildWhatsappUrl(buildProductOrderMessage(product))}" target="_blank" rel="noreferrer">Order on WhatsApp</a>
         </div>
       </div>
     </div>
@@ -462,19 +348,15 @@ function cycleReviews(direction) {
   renderReviews();
 }
 
-function buildSingleProductMessage(product) {
-  return `Hello FitMoongfali! I would like to order ${product.name} (${product.weight}) for Rs. ${product.price}. Please share the next steps.`;
-}
-
 function handleContactSubmit(event) {
   event.preventDefault();
   const formData = new FormData(selectors.contactForm);
   const name = formData.get("name") || "Customer";
   const email = formData.get("email") || "Not provided";
   const message = formData.get("message") || "I would like to know more about FitMoongfali.";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+  const whatsappUrl = buildWhatsappUrl(
     `Hello FitMoongfali!\n\nMy name is ${name}.\nEmail: ${email}\n\nInquiry:\n${message}`
-  )}`;
+  );
   window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 }
 
