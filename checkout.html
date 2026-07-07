@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | FitMoongfali</title>
+  <meta name="description" content="Review your FitMoongfali cart and send your order on WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="checkout-body">
+  <main class="checkout-page">
+    <section class="checkout-shell container">
+      <div class="checkout-heading">
+        <a class="back-link" href="index.html">&larr; Back to shopping</a>
+        <p class="eyebrow">Checkout</p>
+        <h1>Confirm your order and send it on WhatsApp.</h1>
+        <p>Fill your details below. Your selected products and total are pulled directly from the saved cart.</p>
+      </div>
+      <div class="checkout-layout">
+        <form class="checkout-form" id="checkout-form">
+          <label><span>Name</span><input type="text" name="name" required></label>
+          <label><span>Phone</span><input type="tel" name="phone" required></label>
+          <label><span>Address</span><textarea name="address" rows="3" required></textarea></label>
+          <div class="checkout-grid">
+            <label><span>City</span><input type="text" name="city" required></label>
+            <label><span>State</span><input type="text" name="state" required></label>
+          </div>
+          <label><span>Pincode</span><input type="text" name="pincode" required></label>
+          <button class="button button-solid button-full" type="submit">Order on WhatsApp</button>
+        </form>
+        <aside class="checkout-summary-card">
+          <div class="summary-top">
+            <p class="eyebrow">Order Summary</p>
+            <h2>Your cart</h2>
+          </div>
+          <div id="checkout-items" class="checkout-items"></div>
+          <div class="checkout-total-row">
+            <span>Total</span>
+            <strong id="checkout-total">Rs. 0</strong>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <script src="checkout.js"></script>
+</body>
+</html>
