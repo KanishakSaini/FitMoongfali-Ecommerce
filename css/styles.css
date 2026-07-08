@@ -144,13 +144,13 @@ button {
 
 .site-nav a {
   text-decoration: none;
-  color: var(--muted);
+  color: white;
   font-weight: 600;
 }
 
 .site-nav a:hover,
 .site-nav a:focus-visible {
-  color: var(--accent);
+  color: beige;
 }
 
 .nav-toggle,
