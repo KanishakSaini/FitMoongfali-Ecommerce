@@ -144,8 +144,11 @@ button {
 
 .site-nav a {
   text-decoration: none;
-  color: white;
+  color: #a35214;
   font-weight: 600;
+}
+a.button.button-solid.nav-cta {
+  color: white;
 }
 
 .site-nav a:hover,
