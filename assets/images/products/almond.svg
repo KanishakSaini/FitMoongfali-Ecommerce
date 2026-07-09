@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Almond filled chocolate-coated dates placeholder</title>
+  <desc id="desc">Replaceable product placeholder image.</desc>
+  <rect width="320" height="320" rx="42" fill="#fff8ef"/>
+  <circle cx="160" cy="150" r="92" fill="#fce2af"/>
+  <ellipse cx="160" cy="158" rx="76" ry="48" fill="#6f3515"/>
+  <ellipse cx="160" cy="150" rx="42" ry="19" fill="#d89b64"/>
+  <path d="M128 150c18-25 46-25 64 0-18 14-46 14-64 0z" fill="#f6cf9d"/>
+  <text x="160" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#7f3d0e">Almond</text>
+</svg>

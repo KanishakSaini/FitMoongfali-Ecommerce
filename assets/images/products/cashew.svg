@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Cashew filled chocolate-coated dates placeholder</title>
+  <desc id="desc">Replaceable product placeholder image.</desc>
+  <rect width="320" height="320" rx="42" fill="#fff8ef"/>
+  <circle cx="160" cy="150" r="92" fill="#fce2af"/>
+  <ellipse cx="160" cy="158" rx="76" ry="48" fill="#6f3515"/>
+  <path d="M136 148c22-24 60-4 45 25-13 25-58 15-45-25z" fill="#f5d7a5"/>
+  <text x="160" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#7f3d0e">Cashew</text>
+</svg>

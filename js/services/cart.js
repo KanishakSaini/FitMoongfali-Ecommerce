@@ -28,6 +28,6 @@ export function countItems(cart) {
 export function calculateSubtotal(cart, products) {
   return cart.reduce((sum, item) => {
     const product = products.find((entry) => entry.id === item.id);
-    return product ? sum + product.price * item.quantity : sum;
+    return product && typeof product.price === "number" ? sum + product.price * item.quantity : sum;
   }, 0);
 }

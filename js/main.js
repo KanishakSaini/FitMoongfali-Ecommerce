@@ -24,6 +24,7 @@ const selectors = {
   nav: document.getElementById("site-nav"),
   navToggle: document.querySelector(".nav-toggle"),
   productGrid: document.getElementById("product-grid"),
+  bestSellingGrid: document.getElementById("best-selling-grid"),
   reviewTrack: document.getElementById("review-track"),
   faqList: document.getElementById("faq-list"),
   contactForm: document.getElementById("contact-form"),
@@ -48,6 +49,7 @@ init();
 
 function init() {
   renderProducts();
+  renderBestSelling();
   renderReviews();
   renderFaqs();
   renderCart();
@@ -56,7 +58,25 @@ function init() {
 }
 
 function renderProducts() {
-  selectors.productGrid.innerHTML = products.map((product) => `
+  selectors.productGrid.innerHTML = renderProductCards(products);
+}
+
+function renderBestSelling() {
+  if (!selectors.bestSellingGrid) {
+    return;
+  }
+
+  const bestSellingProductIds = [
+    "mixed-nuts-filled-dates",
+    "peanut-butter-filled-dates"
+  ];
+
+  const bestSellingProducts = products.filter((product) => bestSellingProductIds.includes(product.id));
+  selectors.bestSellingGrid.innerHTML = renderProductCards(bestSellingProducts);
+}
+
+function renderProductCards(productList) {
+  return productList.map((product) => `
     <article class="product-card reveal">
       <div class="product-visual">
         <img src="${product.image}" alt="${product.imageAlt}" loading="lazy">
@@ -64,6 +84,7 @@ function renderProducts() {
       <div class="product-chip-row">
         <span class="product-chip">${product.tag}</span>
         <span class="product-chip">${product.weight}</span>
+        <span class="product-chip">${formatRating(product)}</span>
       </div>
       <h3>${product.name}</h3>
       <p class="product-description">${product.shortDescription}</p>
@@ -73,7 +94,7 @@ function renderProducts() {
       <div class="product-meta">
         <div>
           <span>Price</span>
-          <strong>Rs. ${product.price}</strong>
+          <strong>${formatPrice(product.price)}</strong>
         </div>
         <div>
           <span>Weight</span>
@@ -87,6 +108,18 @@ function renderProducts() {
       </div>
     </article>
   `).join("");
+}
+
+function formatRating(product) {
+  return `&#9733; ${product.rating || 4.9}`;
+}
+
+function formatPrice(price) {
+  return typeof price === "number" ? `Rs. ${price}` : price;
+}
+
+function formatLineTotal(product, quantity) {
+  return typeof product.price === "number" ? `Rs. ${product.price * quantity}` : product.price;
 }
 
 function renderReviews() {
@@ -132,7 +165,7 @@ function renderCart() {
         <div class="cart-row">
           <div>
             <h3>${product.name}</h3>
-            <p>${product.weight} | Rs. ${product.price}</p>
+            <p>${product.weight} | ${formatPrice(product.price)}</p>
           </div>
           <button class="remove-button" type="button" data-cart-remove="${product.id}">Remove</button>
         </div>
@@ -142,7 +175,7 @@ function renderCart() {
             <strong>${item.quantity}</strong>
             <button type="button" data-cart-increase="${product.id}" aria-label="Increase quantity">+</button>
           </div>
-          <strong>Rs. ${product.price * item.quantity}</strong>
+          <strong>${formatLineTotal(product, item.quantity)}</strong>
         </div>
       </article>
     `;
@@ -303,7 +336,7 @@ function openProductModal(productId) {
         <h2>${product.name}</h2>
         <p class="product-description">${product.description}</p>
         <div class="product-chip-row">
-          <span class="product-chip">Rs. ${product.price}</span>
+          <span class="product-chip">${formatPrice(product.price)}</span>
           <span class="product-chip">${product.weight}</span>
         </div>
         <ul class="modal-list">
