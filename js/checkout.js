@@ -56,7 +56,8 @@ function handleCheckoutSubmit(event) {
   const total = calculateSubtotal(cart, products);
   const orderLines = cart.map((item) => {
     const product = findProduct(item.id);
-    return `- ${product.name} x${item.quantity}`;
+    const lineTotal = product.price * item.quantity;
+    return `- ${product.name} | Qty: ${item.quantity} | Price: Rs. ${product.price} each | Line Total: Rs. ${lineTotal}`;
   }).join("\n");
 
   const message = [

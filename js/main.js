@@ -68,11 +68,14 @@ function renderBestSelling() {
 
   const bestSellingProductIds = [
     "mixed-nuts-filled-dates",
-    "peanut-butter-filled-dates"
+    "peanut-butter-filled-dates",
+    "chocolate-protein"
   ];
 
-  const bestSellingProducts = products.filter((product) => bestSellingProductIds.includes(product.id));
-  selectors.bestSellingGrid.innerHTML = renderProductCards(bestSellingProducts);
+  const bestSellingProducts = bestSellingProductIds
+    .map((id) => products.find((product) => product.id === id))
+    .filter(Boolean);
+  selectors.bestSellingGrid.innerHTML = renderBestSellingCards(bestSellingProducts);
 }
 
 function renderProductCards(productList) {
@@ -82,12 +85,9 @@ function renderProductCards(productList) {
         <img src="${product.image}" alt="${product.imageAlt}" loading="lazy">
       </div>
       <div class="product-chip-row">
-        <span class="product-chip">${product.tag}</span>
-        <span class="product-chip">${product.weight}</span>
         <span class="product-chip">${formatRating(product)}</span>
       </div>
       <h3>${product.name}</h3>
-      <p class="product-description">${product.shortDescription}</p>
       <ul class="product-features">
         ${product.features.map((feature) => `<li>${feature}</li>`).join("")}
       </ul>
@@ -96,15 +96,49 @@ function renderProductCards(productList) {
           <span>Price</span>
           <strong>${formatPrice(product.price)}</strong>
         </div>
-        <div>
-          <span>Weight</span>
-          <strong>${product.weight}</strong>
-        </div>
       </div>
       <div class="product-actions">
         <button class="button button-solid" type="button" data-action="add" data-id="${product.id}">Add to Cart</button>
         <a class="button button-ghost" href="${buildWhatsappUrl(buildProductOrderMessage(product))}" target="_blank" rel="noreferrer">Order on WhatsApp</a>
-        <button class="button button-ghost" type="button" data-action="learn" data-id="${product.id}">Learn More</button>
+        <button class="button button-ghost" type="button" data-action="learn" data-id="${product.id}" aria-expanded="false">Learn More &#9662;</button>
+      </div>
+      <div class="product-details-panel" id="product-details-${product.id}">
+        <p class="product-description">${product.description}</p>
+        <div class="product-chip-row">
+          <span class="product-chip">${product.tag}</span>
+          <span class="product-chip">${product.weight}</span>
+        </div>
+        <ul class="product-detail-list">
+          <li><strong>Ingredients:</strong> ${product.ingredients}</li>
+          <li><strong>Nutrition:</strong> ${product.nutrition}</li>
+          <li><strong>Benefits:</strong> ${product.benefits}</li>
+          <li><strong>Storage:</strong> ${product.storage}</li>
+          <li><strong>Best for:</strong> ${product.bestFor}</li>
+        </ul>
+      </div>
+    </article>
+  `).join("");
+}
+
+function renderBestSellingCards(productList) {
+  return productList.map((product) => `
+    <article class="product-card best-selling-card reveal">
+      <div class="product-visual best-selling-visual">
+        <img src="${product.image}" alt="${product.imageAlt}" loading="lazy">
+      </div>
+      <div class="product-chip-row">
+        <span class="product-chip">${product.tag}</span>
+        <span class="product-chip">${formatRating(product)}</span>
+      </div>
+      <h3>${product.name}</h3>
+      <div class="product-meta">
+        <div>
+          <span>Price</span>
+          <strong>${formatPrice(product.price)}</strong>
+        </div>
+      </div>
+      <div class="product-actions">
+        <button class="button button-solid" type="button" data-action="add" data-id="${product.id}">Add to Cart</button>
       </div>
     </article>
   `).join("");
@@ -212,6 +246,7 @@ function setupEvents() {
   selectors.reviewNext.addEventListener("click", () => cycleReviews(1));
   selectors.contactForm.addEventListener("submit", handleContactSubmit);
   window.addEventListener("resize", renderReviews);
+  window.addEventListener("resize", updateOpenProductDetailsHeight);
 
   document.addEventListener("click", (event) => {
     const addButton = event.target.closest("[data-action='add']");
@@ -254,6 +289,45 @@ function setupEvents() {
   selectors.modal.addEventListener("cancel", (event) => {
     event.preventDefault();
     closeModal();
+  });
+}
+
+function toggleProductDetails(button) {
+  const activeCard = button.closest(".product-card");
+  if (!activeCard) {
+    return;
+  }
+
+  const shouldOpen = !activeCard.classList.contains("details-open");
+
+  document.querySelectorAll(".product-card.details-open").forEach((card) => {
+    if (card !== activeCard) {
+      setProductDetailsState(card, false);
+    }
+  });
+
+  setProductDetailsState(activeCard, shouldOpen);
+}
+
+function setProductDetailsState(card, shouldOpen) {
+  const button = card.querySelector("[data-action='learn']");
+  const panel = card.querySelector(".product-details-panel");
+  if (!button || !panel) {
+    return;
+  }
+
+  card.classList.toggle("details-open", shouldOpen);
+  button.setAttribute("aria-expanded", String(shouldOpen));
+  button.innerHTML = shouldOpen ? "Show Less &#9652;" : "Learn More &#9662;";
+  panel.style.maxHeight = shouldOpen ? `${panel.scrollHeight}px` : "0px";
+}
+
+function updateOpenProductDetailsHeight() {
+  document.querySelectorAll(".product-card.details-open").forEach((card) => {
+    const panel = card.querySelector(".product-details-panel");
+    if (panel) {
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+    }
   });
 }
 

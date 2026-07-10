@@ -579,6 +579,37 @@ h3 {
   margin-top: 32px;
 }
 
+.best-selling-showcase {
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at top right, rgba(252, 226, 175, 0.62), transparent 42%),
+    rgba(255, 251, 246, 0.82);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.best-selling-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.best-selling-card {
+  padding: 26px;
+  background: rgba(255, 253, 249, 0.9);
+}
+
+.best-selling-visual {
+  min-height: 300px;
+}
+
+.best-selling-visual img {
+  width: min(100%, 250px);
+}
+
 .product-card {
   padding: 22px;
   transition: transform 220ms ease, box-shadow 220ms ease;
@@ -655,19 +686,19 @@ h3 {
 }
 
 .product-features {
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
   padding: 0;
-  margin: 18px 0;
+  margin: 14px 0;
   list-style: none;
 }
 
 .product-features li {
-  padding: 8px 10px;
+  padding: 6px 8px;
   border-radius: 999px;
   background: rgba(255, 251, 246, 0.8);
   border: 1px solid rgba(81, 41, 15, 0.08);
-  font-size: 0.86rem;
+  font-size: 0.82rem;
 }
 
 .product-meta {
@@ -687,6 +718,36 @@ h3 {
 
 .product-actions {
   margin-top: 18px;
+}
+
+.product-details-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 320ms ease, margin-top 320ms ease, padding-top 320ms ease;
+}
+
+.product-card.details-open .product-details-panel {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.product-details-panel .product-chip-row {
+  margin-top: 12px;
+}
+
+.product-detail-list {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 14px 0 0;
+  list-style: none;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.product-detail-list strong {
+  color: var(--text);
 }
 
 .benefit-grid {
@@ -1227,10 +1288,14 @@ textarea {
   }
 
   .product-grid,
-  .benefit-grid,
   .review-track,
   .featured-grid,
   .footer-layout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .benefit-grid,
+  .best-selling-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1292,6 +1357,10 @@ textarea {
     min-height: 360px;
   }
 
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .brand-logo,
   .footer-logo {
     width: min(260px, 52vw);
@@ -1317,10 +1386,14 @@ textarea {
   }
 
   .product-grid,
-  .benefit-grid,
   .review-track,
   .featured-grid,
   .footer-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .benefit-grid,
+  .best-selling-grid {
     grid-template-columns: 1fr;
   }
 
