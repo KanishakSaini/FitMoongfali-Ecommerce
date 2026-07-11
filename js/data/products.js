@@ -61,7 +61,7 @@ export const products = [
     shortDescription: "The Classic, Dressed Up",
     description: "The Classic, Dressed Up. A date that grew up — dipped in chocolate, holding a whole almond like a secret.",
     tag: "Dates",
-    price: 399,
+    price: 299,
     weight: "Gift Box",
     image: "assets/images/products/almond.svg",
     imageAlt: "Almond filled chocolate-coated dates",
