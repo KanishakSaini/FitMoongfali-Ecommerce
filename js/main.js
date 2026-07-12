@@ -16,7 +16,8 @@ import { buildWhatsappUrl, buildProductOrderMessage } from "./services/whatsapp.
 
 const state = {
   cart: loadCart(),
-  reviewIndex: 0
+  reviewIndex: 0,
+  userReviews: loadUserReviews()
 };
 
 const selectors = {
@@ -42,7 +43,9 @@ const selectors = {
   modalContent: document.getElementById("modal-content"),
   modalClose: document.getElementById("modal-close"),
   reviewPrev: document.getElementById("review-prev"),
-  reviewNext: document.getElementById("review-next")
+  reviewNext: document.getElementById("review-next"),
+  writeReviewForm: document.getElementById("write-review-form"),
+  reviewFormMessage: document.getElementById("review-form-message")
 };
 
 init();
@@ -157,20 +160,55 @@ function formatLineTotal(product, quantity) {
 }
 
 function renderReviews() {
-  const visibleReviews = window.innerWidth <= 640
-    ? [reviews[state.reviewIndex % reviews.length]]
-    : [0, 1, 2].map((offset) => reviews[(state.reviewIndex + offset) % reviews.length]);
+  const allReviews = getAllReviews();
+  const visibleReviews = window.innerWidth <= 768
+    ? allReviews
+    : [0, 1, 2].map((offset) => allReviews[(state.reviewIndex + offset) % allReviews.length]);
 
   selectors.reviewTrack.innerHTML = visibleReviews.map((review) => `
     <article class="review-card">
-      <div class="review-stars" aria-label="5 star review">
-        <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+      <div class="review-stars" aria-label="${review.rating || 5} star review">
+        ${renderReviewStars(review.rating || 5)}
       </div>
-      <h3>${review.name}</h3>
-      <p>${review.text}</p>
-      <small>${review.role}</small>
+      <h3>${escapeHtml(review.name)}</h3>
+      <p>${escapeHtml(review.text)}</p>
+      <small>${escapeHtml(review.role)}</small>
     </article>
   `).join("");
+}
+
+function getAllReviews() {
+  return [...reviews, ...state.userReviews];
+}
+
+function renderReviewStars(rating) {
+  return Array.from({ length: 5 }, (_, index) => (
+    `<span class="${index < rating ? "" : "review-star-empty"}">&#9733;</span>`
+  )).join("");
+}
+
+function loadUserReviews() {
+  try {
+    const savedReviews = JSON.parse(localStorage.getItem("fitmoongfali-user-reviews") || "[]");
+    return Array.isArray(savedReviews) ? savedReviews : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveUserReviews() {
+  localStorage.setItem("fitmoongfali-user-reviews", JSON.stringify(state.userReviews));
+}
+
+function escapeHtml(value) {
+  const escapeMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  };
+  return String(value).replace(/[&<>"']/g, (character) => escapeMap[character]);
 }
 
 function renderFaqs() {
@@ -244,6 +282,7 @@ function setupEvents() {
   selectors.modalClose.addEventListener("click", closeModal);
   selectors.reviewPrev.addEventListener("click", () => cycleReviews(-1));
   selectors.reviewNext.addEventListener("click", () => cycleReviews(1));
+  selectors.writeReviewForm.addEventListener("submit", handleReviewSubmit);
   selectors.contactForm.addEventListener("submit", handleContactSubmit);
   window.addEventListener("resize", renderReviews);
   window.addEventListener("resize", updateOpenProductDetailsHeight);
@@ -451,8 +490,43 @@ function toggleFaq(activeItem) {
 }
 
 function cycleReviews(direction) {
-  state.reviewIndex = (state.reviewIndex + direction + reviews.length) % reviews.length;
+  const reviewCount = getAllReviews().length;
+  state.reviewIndex = (state.reviewIndex + direction + reviewCount) % reviewCount;
   renderReviews();
+}
+
+function handleReviewSubmit(event) {
+  event.preventDefault();
+  const formData = new FormData(selectors.writeReviewForm);
+  const name = formData.get("reviewer-name")?.trim();
+  const rating = Number(formData.get("review-rating"));
+  const text = formData.get("review-text")?.trim();
+
+  if (!name || !rating || !text) {
+    selectors.reviewFormMessage.textContent = "Please complete your name, rating, and review before submitting.";
+    selectors.reviewFormMessage.className = "review-form-message is-error";
+    return;
+  }
+
+  state.userReviews.push({
+    id: window.crypto?.randomUUID?.() || `review-${Date.now()}`,
+    name,
+    rating,
+    text,
+    role: "FitMoongfali customer"
+  });
+  saveUserReviews();
+  state.reviewIndex = getAllReviews().length - 1;
+  renderReviews();
+  selectors.writeReviewForm.reset();
+  selectors.reviewFormMessage.textContent = "Thank you! Your review has been submitted.";
+  selectors.reviewFormMessage.className = "review-form-message is-success";
+
+  if (window.innerWidth <= 768) {
+    requestAnimationFrame(() => {
+      selectors.reviewTrack.scrollTo({ left: selectors.reviewTrack.scrollWidth, behavior: "smooth" });
+    });
+  }
 }
 
 function handleContactSubmit(event) {

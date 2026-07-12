@@ -235,6 +235,40 @@ We believe healthy food should never be boring. That's why we craft fresh peanut
           <div class="review-track" id="review-track"></div>
           <button class="slider-button" type="button" id="review-next" aria-label="Next review">&rarr;</button>
         </div>
+        <div class="write-review-card reveal">
+          <div class="write-review-heading">
+            <p class="eyebrow">Share Your Experience</p>
+            <h3>Write a Review</h3>
+            <p>Your feedback helps us make every jar and every order even better.</p>
+          </div>
+          <form class="write-review-form" id="write-review-form" novalidate>
+            <label>
+              <span>Full Name</span>
+              <input type="text" name="reviewer-name" autocomplete="name" placeholder="Your full name" required>
+            </label>
+            <fieldset class="review-rating-input">
+              <legend>Your Rating</legend>
+              <div class="star-rating" aria-label="Choose a rating from 1 to 5 stars">
+                <input type="radio" id="review-rating-1" name="review-rating" value="1" required>
+                <label for="review-rating-1" aria-label="1 star">&#9733;</label>
+                <input type="radio" id="review-rating-2" name="review-rating" value="2">
+                <label for="review-rating-2" aria-label="2 stars">&#9733;</label>
+                <input type="radio" id="review-rating-3" name="review-rating" value="3">
+                <label for="review-rating-3" aria-label="3 stars">&#9733;</label>
+                <input type="radio" id="review-rating-4" name="review-rating" value="4">
+                <label for="review-rating-4" aria-label="4 stars">&#9733;</label>
+                <input type="radio" id="review-rating-5" name="review-rating" value="5">
+                <label for="review-rating-5" aria-label="5 stars">&#9733;</label>
+              </div>
+            </fieldset>
+            <label>
+              <span>Your Review</span>
+              <textarea name="review-text" rows="5" placeholder="Tell us what you loved about FitMoongfali" required></textarea>
+            </label>
+            <p class="review-form-message" id="review-form-message" role="status" aria-live="polite"></p>
+            <button class="button button-solid" type="submit">Submit Review</button>
+          </form>
+        </div>
       </div>
     </section>
 
