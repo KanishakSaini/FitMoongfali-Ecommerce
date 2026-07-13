@@ -96,13 +96,13 @@ function renderProductCards(productList) {
       </ul>
       <div class="product-meta">
         <div>
-          <span>Price</span>
+          <span>From</span>
           <strong>${formatPrice(product.price)}</strong>
         </div>
       </div>
       <div class="product-actions">
-        <button class="button button-solid" type="button" data-action="add" data-id="${product.id}">Add to Cart</button>
-        <a class="button button-ghost" href="${buildWhatsappUrl(buildProductOrderMessage(product))}" target="_blank" rel="noreferrer">Order on WhatsApp</a>
+        <button class="button button-solid" type="button" data-action="add" data-id="${product.id}">🛒Add to Cart</button>
+        <a class="button button-ghost" href="${buildWhatsappUrl(buildProductOrderMessage(product))}" target="_blank" rel="noreferrer">💬Order on WhatsApp</a>
         <button class="button button-ghost" type="button" data-action="learn" data-id="${product.id}" aria-expanded="false">Learn More &#9662;</button>
       </div>
       <div class="product-details-panel" id="product-details-${product.id}">
@@ -136,12 +136,12 @@ function renderBestSellingCards(productList) {
       <h3>${product.name}</h3>
       <div class="product-meta">
         <div>
-          <span>Price</span>
+          <span>From</span>
           <strong>${formatPrice(product.price)}</strong>
         </div>
       </div>
       <div class="product-actions">
-        <button class="button button-solid" type="button" data-action="add" data-id="${product.id}">Add to Cart</button>
+        <button class="button button-solid" type="button" data-action="add" data-id="${product.id}">🛒Add to Cart</button>
       </div>
     </article>
   `).join("");
