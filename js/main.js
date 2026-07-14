@@ -17,8 +17,17 @@ import { buildWhatsappUrl, buildProductOrderMessage } from "./services/whatsapp.
 const state = {
   cart: loadCart(),
   reviewIndex: 0,
-  userReviews: loadUserReviews()
+  userReviews: loadUserReviews(),
+  heroSlideIndex: 0,
+  heroCarouselTimer: null
 };
+
+// Replace these placeholder image paths with future campaign banners as needed.
+const heroBanners = [
+  { src: "assets/images/hero-banners/rakhi.banner1.png", alt: "rakhispecial" },
+  { src: "assets/images/hero-banners/banner-02.svg", alt: "FitMoongfali banner placeholder" },
+  { src: "assets/images/hero-banners/banner-03.svg", alt: "FitMoongfali banner placeholder" }
+];
 
 const selectors = {
   header: document.querySelector(".site-header"),
@@ -46,18 +55,113 @@ const selectors = {
   reviewNext: document.getElementById("review-next"),
   writeReviewForm: document.getElementById("write-review-form"),
   reviewFormMessage: document.getElementById("review-form-message")
+  ,heroCarousel: document.querySelector(".hero-carousel")
+  ,heroCarouselSlides: document.getElementById("hero-carousel-slides")
+  ,heroCarouselDots: document.getElementById("hero-carousel-dots")
+  ,heroCarouselPrev: document.getElementById("hero-carousel-prev")
+  ,heroCarouselNext: document.getElementById("hero-carousel-next")
 };
 
 init();
 
 function init() {
+  renderHeroCarousel();
   renderProducts();
   renderBestSelling();
   renderReviews();
   renderFaqs();
   renderCart();
   setupEvents();
+  setupHeroCarousel();
   setupRevealAnimations();
+}
+
+function renderHeroCarousel() {
+  if (!selectors.heroCarouselSlides || !selectors.heroCarouselDots) {
+    return;
+  }
+
+  selectors.heroCarouselSlides.innerHTML = heroBanners.map((banner, index) => `
+    <figure class="hero-carousel-slide ${index === 0 ? "is-active" : ""}" aria-hidden="${index === 0 ? "false" : "true"}">
+      <img src="${banner.src}" alt="${banner.alt}" ${index === 0 ? "" : "loading=\"lazy\""}>
+    </figure>
+  `).join("");
+
+  selectors.heroCarouselDots.innerHTML = heroBanners.map((_, index) => `
+    <button class="hero-carousel-dot ${index === 0 ? "is-active" : ""}" type="button" data-hero-slide="${index}" aria-label="Show banner ${index + 1}" aria-current="${index === 0 ? "true" : "false"}"></button>
+  `).join("");
+}
+
+function setupHeroCarousel() {
+  if (!selectors.heroCarousel || heroBanners.length < 2) {
+    return;
+  }
+
+  selectors.heroCarouselPrev.addEventListener("click", () => moveHeroCarousel(-1));
+  selectors.heroCarouselNext.addEventListener("click", () => moveHeroCarousel(1));
+  selectors.heroCarouselDots.addEventListener("click", (event) => {
+    const dot = event.target.closest("[data-hero-slide]");
+    if (dot) {
+      showHeroSlide(Number(dot.dataset.heroSlide));
+      startHeroCarousel();
+    }
+  });
+
+  selectors.heroCarousel.addEventListener("mouseenter", stopHeroCarousel);
+  selectors.heroCarousel.addEventListener("mouseleave", startHeroCarousel);
+  selectors.heroCarousel.addEventListener("focusin", stopHeroCarousel);
+  selectors.heroCarousel.addEventListener("focusout", (event) => {
+    if (!selectors.heroCarousel.contains(event.relatedTarget)) {
+      startHeroCarousel();
+    }
+  });
+
+  let touchStartX = 0;
+  selectors.heroCarousel.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "touch") {
+      touchStartX = event.clientX;
+    }
+  });
+  selectors.heroCarousel.addEventListener("pointerup", (event) => {
+    if (event.pointerType !== "touch") {
+      return;
+    }
+    const swipeDistance = event.clientX - touchStartX;
+    if (Math.abs(swipeDistance) > 40) {
+      moveHeroCarousel(swipeDistance > 0 ? -1 : 1);
+    }
+  });
+
+  startHeroCarousel();
+}
+
+function moveHeroCarousel(direction) {
+  showHeroSlide((state.heroSlideIndex + direction + heroBanners.length) % heroBanners.length);
+  startHeroCarousel();
+}
+
+function showHeroSlide(index) {
+  state.heroSlideIndex = index;
+  selectors.heroCarouselSlides.querySelectorAll(".hero-carousel-slide").forEach((slide, slideIndex) => {
+    const isActive = slideIndex === index;
+    slide.classList.toggle("is-active", isActive);
+    slide.setAttribute("aria-hidden", String(!isActive));
+  });
+  selectors.heroCarouselDots.querySelectorAll(".hero-carousel-dot").forEach((dot, dotIndex) => {
+    const isActive = dotIndex === index;
+    dot.classList.toggle("is-active", isActive);
+    dot.setAttribute("aria-current", String(isActive));
+  });
+}
+
+function startHeroCarousel() {
+  stopHeroCarousel();
+  state.heroCarouselTimer = window.setInterval(() => moveHeroCarousel(1), 5000);
+}
+
+function stopHeroCarousel() {
+  window.clearInterval(state.heroCarouselTimer);
+  state.heroCarouselTimer = null;
 }
 
 function renderProducts() {

@@ -409,9 +409,113 @@ h3 {
 
 .hero-visual {
   position: relative;
+  align-self: stretch;
+  width: 100%;
+  min-height: 720px;
+  max-width: 100%;
+  
 }
 
-.hero-card,
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  box-shadow: var(--shadow);
+  isolation: isolate;
+}
+
+.hero-carousel-slides,
+.hero-carousel-slide {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-carousel-slide {
+  margin: 0;
+  opacity: 0;
+  transition: opacity 650ms ease;
+}
+
+.hero-carousel-slide.is-active {
+  opacity: 1;
+}
+
+.hero-carousel-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 50%;
+  color: var(--text);
+  background: rgba(255, 253, 249, 0.86);
+  box-shadow: 0 10px 24px rgba(81, 41, 15, 0.16);
+  transform: translateY(-50%);
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.hero-carousel-arrow:hover,
+.hero-carousel-arrow:focus-visible {
+  background: #fff;
+  transform: translateY(-50%) scale(1.06);
+  outline: none;
+}
+
+.hero-carousel-arrow-prev {
+  left: 18px;
+}
+
+.hero-carousel-arrow-next {
+  right: 18px;
+}
+
+.hero-carousel-dots {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 20px;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hero-carousel-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 253, 249, 0.72);
+  box-shadow: 0 2px 8px rgba(45, 26, 15, 0.2);
+  transition: width 180ms ease, background 180ms ease;
+}
+
+.hero-carousel-dot.is-active {
+  width: 28px;
+  background: var(--accent);
+}
+
+.hero-carousel:focus-visible {
+  outline: 3px solid rgba(163, 82, 20, 0.38);
+  outline-offset: 4px;
+}
+
 .glass-card,
 .product-card,
 .benefit-card,
@@ -426,111 +530,16 @@ h3 {
   backdrop-filter: blur(18px);
 }
 
-.hero-card {
-  padding: 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.hero-card-top span {
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  color: var(--muted);
-}
-
-.hero-card-top p {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.hero-product-stack {
-  position: relative;
-  min-height: 440px;
-  display: grid;
-  place-items: center;
-}
-
-.hero-jar {
-  position: absolute;
-  width: min(50%, 220px);
-  filter: drop-shadow(0 34px 38px rgba(80, 42, 14, 0.18));
-  animation: floatJar 5s ease-in-out infinite;
-}
-
-.hero-jar-front {
-  z-index: 3;
-}
-
-.hero-jar-back {
-  left: 10%;
-  bottom: 90px;
-  width: min(42%, 180px);
-  opacity: 0.9;
-  animation-delay: -1.5s;
-}
-
-.hero-jar-side {
-  right: 8%;
-  bottom: 70px;
-  width: min(42%, 180px);
-  opacity: 0.88;
-  animation-delay: -3s;
-}
-
-.hero-card-bottom {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-.hero-card-bottom article {
-  padding: 18px;
-  border-radius: var(--radius-lg);
-  background: rgba(255, 253, 250, 0.8);
-}
-
-.hero-card-bottom strong,
 .product-meta strong,
 .summary-top h2,
 .checkout-total-row strong {
   display: block;
 }
 
-.hero-card-bottom span,
 .product-meta span,
 .review-card small,
 .faq-question span {
   color: var(--muted);
-}
-
-.peanut {
-  position: absolute;
-  width: 90px;
-  height: 60px;
-  border-radius: 55% 45% 52% 48% / 60% 44% 56% 40%;
-  background: linear-gradient(145deg, #e9b67c, #cc874b);
-  opacity: 0.32;
-  filter: blur(0.2px);
-  animation: floatPeanut 6s ease-in-out infinite;
-}
-
-.peanut-one {
-  top: 20px;
-  right: 20px;
-}
-
-.peanut-two {
-  left: -8px;
-  bottom: 80px;
-  animation-delay: -2.2s;
 }
 
 .featured-strip {
@@ -1460,13 +1469,19 @@ textarea {
   }
 
   .hero-trust-bar,
-  .hero-card-bottom,
   .checkout-grid {
     grid-template-columns: 1fr;
   }
 
-  .hero-product-stack {
-    min-height: 360px;
+  .hero-carousel {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1.5 / 1;
+  }
+
+  .hero-visual {
+    align-self: auto;
+    min-height: 0;
   }
 
   .product-grid {
@@ -1526,7 +1541,6 @@ textarea {
   .customization-form,
   .checkout-summary-card,
   .checkout-form,
-  .hero-card,
   .faq-item {
     border-radius: 24px;
   }
@@ -1664,44 +1678,26 @@ textarea {
     line-height: 1.35;
   }
 
-  .hero-card {
-    padding: 16px;
+  .hero-carousel {
+    aspect-ratio: 1.32 / 1;
+    border-radius: 24px;
   }
 
-  .hero-card-top {
-    gap: 10px;
+  .hero-carousel-arrow {
+    width: 40px;
+    height: 40px;
   }
 
-  .hero-card-top span {
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
+  .hero-carousel-arrow-prev {
+    left: 12px;
   }
 
-  .hero-card-top p {
-    font-size: 0.8rem;
-    white-space: nowrap;
+  .hero-carousel-arrow-next {
+    right: 12px;
   }
 
-  .hero-product-stack {
-    min-height: clamp(265px, 76vw, 340px);
-  }
-
-  .hero-card-bottom {
-    gap: 10px;
-  }
-
-  .hero-card-bottom article {
-    padding: 14px;
-    border-radius: 18px;
-  }
-
-  .hero-card-bottom strong {
-    font-size: 0.94rem;
-  }
-
-  .hero-card-bottom span {
-    font-size: 0.8rem;
-    line-height: 1.45;
+  .hero-carousel-dots {
+    bottom: 14px;
   }
 
   .featured-strip {
