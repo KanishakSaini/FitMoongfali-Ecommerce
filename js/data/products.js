@@ -67,7 +67,7 @@ export const products = [
     imageAlt: "Almond filled chocolate-coated dates",
     features: ["Chocolate-coated", "Almond filled", "Premium gift"],
     ingredients: "Dates, chocolate coating, and almond filling.",
-    nutrition: "Nutrition details coming soon.",
+    nutrition: "Approx. per 100g – 470 kcal | Protein 7g | Healthy Fats 22g | Carbohydrates 58g | Fiber 8g",
     benefits: "A premium date treat for gifting, celebrations, and mindful indulgence.",
     storage: "Store in a cool, dry place away from direct sunlight.",
     bestFor: "Premium gifting and festive sharing."
@@ -84,7 +84,7 @@ export const products = [
     imageAlt: "Cashew filled chocolate-coated dates",
     features: ["Chocolate-coated", "Cashew filled", "Premium gift"],
     ingredients: "Dates, chocolate coating, and cashew filling.",
-    nutrition: "Nutrition details coming soon.",
+    nutrition: " Approx. per 100g – 475 kcal | Protein 6g | Healthy Fats 24g | Carbohydrates 57g | Fiber 7g",
     benefits: "A smooth premium date treat for gifting and celebrations.",
     storage: "Store in a cool, dry place away from direct sunlight.",
     bestFor: "Elegant gifting and family occasions."
@@ -118,7 +118,7 @@ export const products = [
     imageAlt: "Pistachio filled chocolate-coated dates",
     features: ["Chocolate-coated", "Pistachio filled", "Premium gift"],
     ingredients: "Dates, chocolate coating, and pistachio filling.",
-    nutrition: "Nutrition details coming soon.",
+    nutrition: "Approx. per 100g – 470 kcal | Protein 7g | Healthy Fats 23g | Carbohydrates 56g | Fiber 8g",
     benefits: "A luxurious date treat for premium gifting and celebrations.",
     storage: "Store in a cool, dry place away from direct sunlight.",
     bestFor: "Premium gift boxes and festive occasions."
@@ -135,7 +135,7 @@ export const products = [
     imageAlt: "Mixed nuts filled chocolate-coated dates",
     features: ["Chocolate-coated", "Mixed nuts", "Premium gift"],
     ingredients: "Dates, chocolate coating, and mixed nut filling.",
-    nutrition: "Nutrition details coming soon.",
+    nutrition: "Approx. per 100g – 480 kcal | Protein 7g | Healthy Fats 25g | Carbohydrates 55g | Fiber 8g",
     benefits: "A premium assortment-style bite for gifting, celebrations, and sharing.",
     storage: "Store in a cool, dry place away from direct sunlight.",
     bestFor: "Gift boxes, celebrations, and premium sharing."
@@ -152,7 +152,7 @@ export const products = [
     imageAlt: "Peanut butter filled chocolate-coated dates",
     features: ["Chocolate-coated", "Peanut butter", "Premium gift"],
     ingredients: "Dates, chocolate coating, and peanut butter filling.",
-    nutrition: "Nutrition details coming soon.",
+    nutrition: "Approx. per 100g – 490 kcal | Protein 8g | Healthy Fats 27g | Carbohydrates 54g | Fiber 7g",
     benefits: "A rich premium date treat for peanut butter lovers and gift boxes.",
     storage: "Store in a cool, dry place away from direct sunlight.",
     bestFor: "Peanut butter lovers, gift boxes, and celebrations."
