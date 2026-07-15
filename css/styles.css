@@ -1758,15 +1758,17 @@ textarea {
   .best-selling-visual,
   .product-visual {
     min-height: 148px;
-    padding: 10px;
+  
     border-radius: 16px;
   }
 
   .best-selling-visual img,
   .product-visual img {
-    width: min(100%, 128px);
-    max-height: 128px;
-    object-fit: contain;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .product-grid {
@@ -1891,12 +1893,12 @@ textarea {
   }
 
   .best-selling-grid .product-card:last-child {
-    width: 100%;
+    height: auto;
   }
 
   .best-selling-visual,
   .product-visual {
-    min-height: 132px;
+    height : auto;
   }
 
   .product-card h3 {
