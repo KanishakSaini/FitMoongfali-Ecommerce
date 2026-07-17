@@ -22,6 +22,8 @@ const state = {
   heroCarouselTimer: null
 };
 
+let lastScrollY = 0;
+
 // Replace these placeholder image paths with future campaign banners as needed.
 const heroBanners = [
   { src: "assets/images/hero-banners/image.png", alt: "rakhispecial" },
@@ -475,7 +477,29 @@ function updateOpenProductDetailsHeight() {
 }
 
 function handleHeaderScroll() {
-  selectors.header.classList.toggle("scrolled", window.scrollY > 24);
+  // Don't animate navbar while cart is open
+  if (document.body.classList.contains("cart-open")) {
+    return;
+  }
+
+  const currentScroll = window.scrollY;
+
+  selectors.header.classList.toggle("scrolled", currentScroll > 24);
+
+  // Always show navbar near the top
+  if (currentScroll < 80) {
+    selectors.header.classList.remove("hide");
+  }
+  // Hide while scrolling down
+  else if (currentScroll > lastScrollY) {
+    selectors.header.classList.add("hide");
+  }
+  // Show while scrolling up
+  else {
+    selectors.header.classList.remove("hide");
+  }
+
+  lastScrollY = currentScroll;
 }
 
 function toggleMenu(forceState) {
@@ -486,6 +510,8 @@ function toggleMenu(forceState) {
 }
 
 function openCart() {
+   selectors.header.classList.add("hide");
+
   selectors.cartDrawer.classList.add("open");
   selectors.cartDrawer.setAttribute("aria-hidden", "false");
   selectors.backdrop.hidden = false;
@@ -493,10 +519,12 @@ function openCart() {
 }
 
 function closeCart() {
-  selectors.cartDrawer.classList.remove("open");
+    selectors.cartDrawer.classList.remove("open");
   selectors.cartDrawer.setAttribute("aria-hidden", "true");
   selectors.backdrop.hidden = true;
   document.body.classList.remove("cart-open");
+
+  handleHeaderScroll();
 }
 
 function closeOverlays() {

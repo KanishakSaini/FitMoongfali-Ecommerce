@@ -104,8 +104,8 @@ button {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 30;
-  padding: 14px 0;
+  z-index: 100;
+  padding : 0;
   transition: background 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
 }
 
@@ -121,6 +121,8 @@ button {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 24px;
+  min-height : 78px;
+  gap : 18px;
 }
 
 .brand-lockup {
@@ -256,17 +258,17 @@ h3 {
   line-height: 0.96;
 }
 
-.hero-section {
-  padding: 34px 0 40px;
+.hero-section{
+    padding:20px 0 40px;
 }
 
-.hero-layout {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 28px;
-  align-items: center;
-  min-height: calc(100vh - 110px);
+.hero-section > .container{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
 }
+
+
 
 .hero-copy h1 {
   margin-top: 18px;
@@ -372,7 +374,7 @@ h3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  margin-top: 34px;
+  margin-top: 20px;
 }
 
 .hero-trust-bar div,
@@ -408,23 +410,20 @@ h3 {
 }
 
 .hero-visual {
- position: relative;
   width: 100%;
-  max-width: 640px;
-  margin: 0 auto;
-  
+  max-width: none;
+  margin: 0;
 }
 
 .hero-carousel {
- position: relative;
+  position: relative;
   width: 100%;
-  aspect-ratio: 16 / 12;
+  aspect-ratio: 12 / 5;
+  max-width: 100%;
   min-height: 0;
+  max-height: none;
+  border-radius: 18px;
   overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 30px;
-  box-shadow: var(--shadow);
-  isolation: isolate;
 }
 
 .hero-carousel-slides,
@@ -444,10 +443,13 @@ h3 {
 }
 
 .hero-carousel-slide img {
-  display: block;
   width: 100%;
   height: 100%;
+  min-width: 100%;
+  min-height: 100%;
   object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .hero-carousel-arrow {
@@ -1475,7 +1477,7 @@ textarea {
   .hero-carousel {
     height: auto;
     min-height: 0;
-    aspect-ratio: 1.5 / 1;
+    aspect-ratio: 12 / 5;
   }
 
   .hero-visual {
@@ -1605,7 +1607,7 @@ textarea {
   }
 
   .hero-section {
-    padding: 18px 0 26px;
+    padding: 20px 0;
   }
 
   .hero-layout {
@@ -1678,7 +1680,7 @@ textarea {
   }
 
   .hero-carousel {
-    aspect-ratio: 1.32 / 1;
+    aspect-ratio: 12 / 5;
     border-radius: 24px;
   }
 
@@ -1999,4 +2001,12 @@ textarea {
     font-size: 1.1rem;
   }
 }
+.site-header{
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease;
+}
+
+.site-header.hide{
+    transform:translateY(-100%);
 }
