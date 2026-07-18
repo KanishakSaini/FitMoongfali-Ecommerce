@@ -26,10 +26,12 @@ let lastScrollY = 0;
 
 // Replace these placeholder image paths with future campaign banners as needed.
 const heroBanners = [
-  { src: "assets/images/hero-banners/image.png", alt: "rakhispecial" },
-  { src: "assets/images/hero-banners/banner-02.svg", alt: "FitMoongfali banner placeholder" },
-  { src: "assets/images/hero-banners/banner-03.svg", alt: "FitMoongfali banner placeholder" }
+  { src: "assets/images/hero-banners/bannerA.png", alt: "rakhispecial" },
+  { src: "assets/images/hero-banners/bannerB.png", alt: "FitMoongfali banner placeholder" },
+  { src: "assets/images/hero-banners/bannerC.png", alt: "FitMoongfali banner placeholder" },
+   { src: "assets/images/hero-banners/bannerC.png", alt: "FitMoongfali banner placeholder" }
 ];
+
 
 const selectors = {
   header: document.querySelector(".site-header"),
