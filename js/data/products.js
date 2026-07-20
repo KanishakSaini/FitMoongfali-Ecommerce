@@ -97,7 +97,7 @@ export const products = [
     tag: "Oatmeal Partner😋",
     price: 260,
     weight: "500gm",
-    image: "assets/images/DarkChoco.png",
+    image: "assets/images/products/DarkChoco.png",
     imageAlt: "Walnut filled chocolate-coated dates",
     features: ["Rich Cocoa", "Protein Rich", "Smooth Spread"],
     ingredients: "Roasted peanuts,Cocoa, and Honey.",
